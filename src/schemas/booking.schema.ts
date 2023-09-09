@@ -8,8 +8,10 @@ export type BookingDocument = HydratedDocument<Booking>;
 export class Booking extends Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Blog" })
   blog: string;
-
+  
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User" })
   user: string;
+  @Prop({ required: true })
+  numberOfTickets: string;
 }
 export const BookingSchema = SchemaFactory.createForClass(Booking);

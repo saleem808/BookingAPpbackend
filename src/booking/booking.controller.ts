@@ -3,6 +3,8 @@ import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { promises } from 'dns';
+import { BookingDocument } from 'src/schemas/booking.schema';
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
@@ -11,16 +13,20 @@ export class BookingController {
   @UseGuards(AuthGuard())
   async create(
     @Req() req,
-    // @UploadedFile() thumbnail: Express.Multer.File,
     @Body() createBookingDto: CreateBookingDto,
-    
-  ) {
+    ) {
+    const {event,numberOfTickets}=createBookingDto
     console.log(createBookingDto);
-    // return
-    return this.bookingService.create(createBookingDto,req.user._id);
+    return this.bookingService.create(event,req.user._id,numberOfTickets);
   }
 
   @Get()
+  @UseGuards(AuthGuard())
+  async findUserBookings (@Req() req):Promise<BookingDocument[]>{
+    return this.bookingService.findUserBookings(req.user._id);
+  }
+  
+
   findAll() {
     return this.bookingService.findAll();
   }

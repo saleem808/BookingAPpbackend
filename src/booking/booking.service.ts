@@ -11,16 +11,25 @@ export class BookingService {
     @InjectModel(Booking.name) private readonly BookingModel: Model<BookingDocument>,
   ) {}
   async create(
-    createBookingDto: CreateBookingDto,
+    event_id:string,
     id: string,
+    numberOfTickets:string
     
   ): Promise<BookingDocument> {
+    console.log(" services",numberOfTickets);
+    
     const post = new this.BookingModel({
       user: id,
-      event:createBookingDto.event
+      blog:event_id,
+      numberOfTickets:numberOfTickets
       
     });
     return post.save();
+  }
+  async findUserBookings(user:string):Promise<BookingDocument[]>{
+    const bookings = this.BookingModel.find({ user:user }).populate("user")
+    return bookings
+
   }
 
   findAll() {

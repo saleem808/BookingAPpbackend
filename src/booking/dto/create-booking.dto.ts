@@ -1,4 +1,5 @@
 export class CreateBookingDto {
-    user:string;
     event:string
+    numberOfTickets:string
+
 }
